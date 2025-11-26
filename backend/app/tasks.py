@@ -7,7 +7,7 @@ from psycopg2.extras import execute_values
 logger = logging.getLogger(__name__)
 
 celery = Celery(
-    "tasks",
+    "backend.app.tasks.process_csv_task",
     broker=settings.CELERY_BROKER_URL,
     backend=settings.CELERY_RESULT_BACKEND
 )
