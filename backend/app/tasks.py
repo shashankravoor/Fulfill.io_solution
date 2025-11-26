@@ -7,7 +7,7 @@ from psycopg2.extras import execute_values
 logger = logging.getLogger(__name__)
 
 celery = Celery(
-    "backend.app.tasks.process_csv_task",
+    "tasks",
     broker=settings.CELERY_BROKER_URL,
     backend=settings.CELERY_RESULT_BACKEND
 )
@@ -23,7 +23,7 @@ def pg_copy_from_csv(conn_info: str, csv_path: str):
     finally:
         conn.close()
 
-@celery.task(bind=True, max_retries=3, default_retry_delay=10)
+@celery.task(name="backend.app.tasks.process_csv_task",bind=True, max_retries=3, default_retry_delay=10)
 def process_csv_task(self, csv_path: str):
     try:
         logger.info("Starting CSV import: %s", csv_path)
