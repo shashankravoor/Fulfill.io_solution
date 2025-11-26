@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5432:5432"
+      - "6001:6001"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -18,7 +18,8 @@ services:
 
   backend:
     build:
-      context: ./backend
+      context: .
+      dockerfile: backend/Dockerfile
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/products
       REDIS_URL: redis://redis:6379/0
@@ -34,7 +35,8 @@ services:
 
   worker:
     build:
-      context: ./worker
+      context: .
+      dockerfile: worker/Dockerfile 
     depends_on:
       - db
       - redis
